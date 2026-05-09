@@ -8,6 +8,7 @@ const EvaluationSchema = new mongoose.Schema({
   semester: { type: Number, required: true },
   totalMarks: { type: Number, required: true },
   percentage: { type: Number, required: true },
+  totalPossible: { type: Number },
   details: [
     {
       question: Number,

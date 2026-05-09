@@ -118,6 +118,7 @@ export default function Dashboard() {
         semester: parseInt(faculty.teachingConfig[selectedConfigIdx].semester),
         totalMarks: results.total_score,
         percentage: results.percentage,
+        totalPossible: results.total_possible,
         details: results.details
       }, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
@@ -149,7 +150,7 @@ export default function Dashboard() {
       studentRollNumber: evalData.studentRollNumber,
       total_score: evalData.totalMarks,
       percentage: evalData.percentage,
-      total_possible: 100,
+      total_possible: evalData.totalPossible || (evalData.percentage > 0 ? Math.round((evalData.totalMarks / evalData.percentage) * 100) : 0),
       details: evalData.details,
       subject: evalData.subject
     });
@@ -349,14 +350,17 @@ export default function Dashboard() {
                             <p className="text-[11px] font-mono text-primary">{results.studentRollNumber}</p>
                           </div>
                         </div>
-                        <div className="flex items-center space-x-6">
-                          <div className="text-right">
-                            <div className="text-[9px] font-bold text-muted uppercase tracking-widest">Similarity</div>
+                        <div className="flex items-center space-x-4 sm:space-x-6">
+                          <div className={`px-3 py-1.5 rounded border text-[10px] font-extrabold uppercase tracking-widest ${results.percentage >= 35 ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' : 'bg-red-500/10 border-red-500/30 text-red-400'}`}>
+                            {results.percentage >= 35 ? 'PASS' : 'FAIL'}
+                          </div>
+                          <div className="text-right hidden sm:block">
+                            <div className="text-[9px] font-bold text-muted uppercase tracking-widest">Secured</div>
                             <div className="text-sm font-bold text-primary">{results.percentage}%</div>
                           </div>
                           <div className="text-right bg-white/5 px-3 py-1 rounded-md border border-white/5">
                             <div className="text-[9px] font-bold text-muted uppercase tracking-widest">Total Mark</div>
-                            <div className="text-lg font-extrabold text-foreground">{results.total_score}</div>
+                            <div className="text-lg font-extrabold text-foreground">{results.total_score} <span className="text-xs text-muted font-semibold opacity-70">/ {results.total_possible}</span></div>
                           </div>
                         </div>
                       </div>

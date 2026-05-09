@@ -18,7 +18,7 @@ const auth = (req, res, next) => {
 
 router.post('/save', auth, async (req, res) => {
   try {
-    const { studentRollNumber, subject, year, semester, totalMarks, percentage, details } = req.body;
+    const { studentRollNumber, subject, year, semester, totalMarks, percentage, totalPossible, details } = req.body;
     
     const evaluation = new Evaluation({
       facultyId: req.user.id,
@@ -28,6 +28,7 @@ router.post('/save', auth, async (req, res) => {
       semester,
       totalMarks,
       percentage,
+      totalPossible,
       details
     });
 
